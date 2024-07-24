@@ -8,6 +8,7 @@ const dashboardRouter = Router();
 dashboardRouter.use('/categories', categoriesRouter);
 dashboardRouter.use('/items', itemsRouter);
 
-dashboardRouter.get('')
+//render main dashboard
+dashboardRouter.get('/', dashController.dashboardGet)
 
 module.exports = dashboardRouter;
