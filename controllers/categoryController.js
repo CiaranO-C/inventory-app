@@ -6,10 +6,27 @@ function allCategoriesGet(req, res, next) {
   res.render("categories");
 }
 
-function singleCategoryGet(req, res, next) {
+const singleCategoryGet = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
-  res.send(`this is the ${id} category!`);
-}
+  const category = await db.query(
+    `
+    SELECT items.id, cat_name, item_name, quantity, price
+    FROM categories
+    JOIN items
+    ON categories.id = items.category_id
+    WHERE categories.id = $1;
+    `,
+    [id],
+  );
+
+  const cat = category.rows[0].cat_name;
+  const categoryTitle = cat.charAt(0).toUpperCase() + cat.slice(1);
+
+  res.render("category", {
+    title: categoryTitle,
+    items: category.rows,
+  });
+});
 
 const createCategoryGet = asyncHandler(async (req, res, next) => {
   res.render("dashboard", {

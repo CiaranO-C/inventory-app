@@ -1,0 +1,23 @@
+<%- include('partials/head')%>
+<%- include('partials/header')%>
+<main>
+    <section class="category-container">
+        <h1><%= title%>:</h1>
+        <div class="category-grid">
+            <p class="item-heading">Name</p>
+            <p class="item-heading">Price</p>
+            <p class="item-heading">Quantity</p>
+            <p class="item-heading">Info</p>
+       
+            <% if(locals.items) { %>
+                <% items.forEach(item => { %>
+                    <p><%= item.item_name %></p>
+                    <p>£<%= item.price %></p>
+                    <p><%= item.quantity %></p>
+                    <a href="/dashboard/items/<%= item.id%>" class="material-symbols-outlined">info</a>   
+                <% }) %>
+            <% } %>
+        </div>
+    </section>
+</main>
+<%- include ('partials/footer')%>
