@@ -1,1 +1,27 @@
-<h1>Dashboard page!</h1>
+<%- include('partials/head')%> 
+<%- include('partials/header')%>
+<% if (locals.modal) { %>
+    <%- include('partials/categoryModal')%>
+<% } %>
+
+<main>
+  <section class="items-section">
+    <h2>Items</h2>
+    <div class="items-info">
+        <a href="" class="item-card">In stock</a>
+        <a href="" class="item-card">Running low</a>
+        <a href="" class="item-card">Out of stock</a>
+    </div>
+  </section>
+  <section class="category-section">
+    <h2>Categories</h2>
+    <div class="category-container">
+        <% if(locals.categories) { %>
+            <% categories.forEach(category => { %>
+        <a href="" class="category-card"><%= category.cat_name%></a>
+        <% })} %>
+        <a href="/dashboard/categories/create" id="add-category" class="category-card">+</a>
+    </div>
+  </section>
+</main>
+<%- include('partials/footer') %>

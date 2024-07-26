@@ -1,0 +1,13 @@
+<div class="overlay">
+<dialog class="modal" open>
+    <a href="/dashboard">close</a>
+    <form action="/dashboard/categories/create" method="POST">
+        <label for="category">Category Name</label>
+        <input type="text" placeholder="" name="categoryName" id="category" value="<%= locals.userInput ? userInput : '' %>">
+        <% if(locals.errors) { %>
+        <p class="error-placeholder"><%= errors.msg%></p>
+        <% } %>
+        <button type="submit">Create category</button>
+    </form>
+</dialog>
+</div>
