@@ -18,7 +18,7 @@
     <div class="category-container">
         <% if(locals.categories) { %>
             <% categories.forEach(category => { %>
-        <a href="" class="category-card"><%= category.cat_name%></a>
+        <a href="/dashboard/categories/<%= category.id %>" class="category-card"><%= category.cat_name%></a>
         <% })} %>
         <a href="/dashboard/categories/create" id="add-category" class="category-card">+</a>
     </div>
