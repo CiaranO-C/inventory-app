@@ -3,6 +3,13 @@ const itemController = require("../controllers/itemController");
 
 const itemsRouter = Router();
 
-itemsRouter.get('/', itemController.allItemsGet)
+itemsRouter.get("/", itemController.allItemsGet);
+
+itemsRouter.get("/create", itemController.createItemGet);
+itemsRouter.post("/create", itemController.createItemPost);
+
+itemsRouter.get("/:id", itemController.singleItemGet);
+itemsRouter.post("/:id", itemController.updateItemForm);
+itemsRouter.post('/:id/update', itemController.updateItemPost)
 
 module.exports = itemsRouter;
