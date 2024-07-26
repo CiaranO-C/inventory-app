@@ -116,7 +116,7 @@ main {
   font-size: 2rem;
 }
 
-.category-container {
+.category-info {
     display: flex;
     flex-direction: column;
 }

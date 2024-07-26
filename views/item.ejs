@@ -1,0 +1,43 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main>
+<div class="item-info">
+    <div>
+        <div class="frame"></div>
+        <h1><%= item.item_name%></h1>
+    </div>
+    <div class="item-details">
+    <% if(locals.admin) { %>
+        <h2>Edit Item</h2>
+        <form action="/dashboard/items/<%= item.id %>" method="POST">
+        <label for="categoryName">Category:</label>
+        <input id="categoryName" name="categoryName" type="text" value="<%= item.cat_name %>">
+
+        <label for="itemName">Name:</label>
+        <input id="itemName" name="itemName" type="text" value="<%= item.item_name %>">
+
+        <label for="price">Price:</label>
+        <input id="price" name="price" type="text" value="<%= item.price %>">
+
+        <label for="quantity">Quantity:</label>
+        <input type="text" name="quantity" id="quantity" value="<%= item.quantity %>">
+
+        <a href="/dashboard/items/<%= item.id %>">Cancel</a>
+        <button type="submit">Confirm</button>
+    </form>
+        <% } else { %>
+        <h2>Info</h2>
+        <p>Category:</p>
+        <p><%= item.cat_name %></p>
+        <p>Name:</p>
+        <p><%= item.item_name %></p>
+        <p>Price:</p>
+        <p><%= item.price %></p>
+        <p>Quantity:</p>
+        <p><%= item.quantity %></p>
+        <a href="/adminCheck">edit</a>
+        <% } %>
+    </div>
+</div>
+</main>
+<%- include('partials/footer') %>
