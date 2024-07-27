@@ -1,11 +1,17 @@
 const asyncHandler = require("express-async-handler");
 
 const adminFormGet = (req, res, next) => {
-  const itemId = req.params.id;
+    const path = '/dashboard' + req.path;
+    console.log(path)
   res.render("adminCheck", {
     title: "Admin Auth",
-    itemId,
+    path
   });
+};
+
+const passwordReceiver = (req, res, next) => {
+  const password = req.body.password;
+  const path = req.path;
 };
 
 const adminFormPost = asyncHandler(async (req, res, next) => {});
