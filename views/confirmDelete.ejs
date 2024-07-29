@@ -1,0 +1,16 @@
+<%- include('partials/head')%>
+<div class="overlay">
+    <h1>Confirm Delete?</h1>
+    <dialog class="modal" open>
+        <form action="/admin/delete" method="POST">
+            <% items.forEach(item => { %>
+                <div>
+                    <input id="itemName" name="itemName" type="hidden" value="<%= item.id %>" readonly>
+                    <p><%= item.item_name %></p>
+                </div>
+            <% }) %>
+            <button type="submit">Confirm</button>
+        </form>
+        <a href="<%= returnPath %>">Cancel</a>
+    </dialog>
+</div>
