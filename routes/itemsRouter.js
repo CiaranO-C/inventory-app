@@ -10,6 +10,8 @@ itemsRouter.post("/create", itemController.createItemPost);
 
 itemsRouter.get("/:id", itemController.singleItemGet);
 itemsRouter.post("/:id", itemController.updateItemForm);
-itemsRouter.post('/:id/update', itemController.updateItemPost)
+
+itemsRouter.post('/:id/update', itemController.updateItemPost); 
+itemsRouter.post('/:id/delete', itemController.deleteOnePost);
 
 module.exports = itemsRouter;

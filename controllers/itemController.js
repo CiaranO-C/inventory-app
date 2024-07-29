@@ -10,30 +10,57 @@ const singleItemGet = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
   const item = await db.query(
     `
-        SELECT items.id, item_name, quantity, price, cat_name
+        SELECT items.id, item_name, quantity, price, cat_name, categories.id AS cat_id
         FROM items
         JOIN categories
         ON items.category_id = categories.id
         WHERE items.id = $1;`,
     [id],
   );
+  console.log(item.rows)
   res.render("item", {
     title: "Item info",
     item: item.rows[0],
   });
 });
 
-function createItemGet(req, res, next) {
-  res.send("create new item!");
-}
+const createItemGet = asyncHandler(async (req, res, next) => {
+  res
+    .setHeader(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate",
+    )
+    .render("item", {
+      title: "Item info",
+      categories: (await db.query("SELECT * FROM categories;")).rows,
+      admin: true,
+    });
+});
 
 function updateItemGet(req, res, next) {
   res.send("update existing item GET");
 }
 
-function createItemPost(req, res, next) {
-  res.send("created new item, display it");
-}
+const createItemPost = asyncHandler(async (req, res, next) => {
+  const { categorySelect, categoryInput, itemName, price, quantity } = req.body;
+
+  if (categoryInput) {
+    const newCategory = await db.query(
+      "INSERT INTO categories(cat_name) VALUES($1) RETURNING id;",
+      [categoryInput],
+    );
+    console.log(newCategory.rows)
+  }
+
+  const newItem = await db.query(
+    `INSERT INTO items(category_id, item_name, quantity, price) VALUES($1, $2, $3, $4) RETURNING *;`,
+    [categorySelect, itemName, quantity, price],
+  );
+
+  console.log(newItem);
+
+  res.redirect(`/dashboard/items/${newItem.rows[0].id}`);
+});
 
 const updateItemForm = [
   body("password").custom((value) => {
@@ -63,8 +90,6 @@ const updateItemForm = [
             WHERE items.id = $1;`,
       [id],
     );
-
-    console.log("here");
 
     res
       .setHeader(
@@ -127,6 +152,7 @@ const updateItemPost = [
   asyncHandler(async (req, res, next) => {
     const { categorySelect, categoryInput, itemName, price, quantity } =
       req.body;
+
     let response;
     let category;
     if (categoryInput) {
@@ -145,14 +171,27 @@ const updateItemPost = [
     }
     category = response.rows[0];
     console.log(category);
-    res.redirect(`/dashboard/items/${req.params.id}`)
-    
+    res.redirect(`/dashboard/items/${req.params.id}`);
 
     const err = validationResult(req);
     if (!err.isEmpty()) {
     }
   }),
 ];
+
+const deleteOnePost = asyncHandler(async (req, res, next) => {
+  const itemId = req.body.toDelete;
+  const item = (await db.query(`SELECT * FROM items WHERE id = $1`, [itemId]))
+    .rows;
+  console.log(`Are you sure you want to delete the following items?`);
+  console.log(item);
+
+  res.render("confirmDelete", {
+    title: "Confirm item delete",
+    items: item,
+    returnPath: `/dashboard/items/${item[0].id}`,
+  });
+});
 
 module.exports = {
   allItemsGet,
@@ -162,4 +201,5 @@ module.exports = {
   createItemPost,
   updateItemForm,
   updateItemPost,
+  deleteOnePost,
 };

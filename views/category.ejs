@@ -3,21 +3,44 @@
 <main>
     <section class="category-info">
         <h1><%= title%>:</h1>
+        <% if(locals.admin) { %>
+            <a href="/dashboard/items/create">Add item</a>
+            <div class="category-grid">
+                <p class="item-heading">Name</p>
+                <p class="item-heading">Price</p>
+                <p class="item-heading">Quantity</p>
+                <p class="item-heading">Info</p>
+           
+                <% if(items[0].item_name) { %>
+                    <% items.forEach(item => { %>
+                        <p><%= item.item_name %></p>
+                        <p>£<%= item.price %></p>
+                        <p><%= item.quantity %></p>
+                        <a href="/dashboard/items/<%= item.item_id%>" class="material-symbols-outlined">info</a>   
+                    <% }) %>
+                <% } %>
+            </div>
+        <% } else { %>    
+        <a href="/admin/categories/<%= categoryId %>">Edit category</a>
         <div class="category-grid">
             <p class="item-heading">Name</p>
             <p class="item-heading">Price</p>
             <p class="item-heading">Quantity</p>
             <p class="item-heading">Info</p>
        
-            <% if(locals.items) { %>
+            <% if(!items[0].item_name) { %>
+                <p>This category has no items!</p>
+
+                <% } else { %>
                 <% items.forEach(item => { %>
                     <p><%= item.item_name %></p>
                     <p>£<%= item.price %></p>
                     <p><%= item.quantity %></p>
-                    <a href="/dashboard/items/<%= item.id%>" class="material-symbols-outlined">info</a>   
+                    <a href="/dashboard/items/<%= item.item_id%>" class="material-symbols-outlined">info</a>   
                 <% }) %>
             <% } %>
         </div>
+        <% } %>
     </section>
 </main>
 <%- include ('partials/footer')%>

@@ -10,9 +10,9 @@ const singleCategoryGet = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
   const category = await db.query(
     `
-    SELECT items.id, cat_name, item_name, quantity, price
+    SELECT categories.id AS cat_id, cat_name, items.id AS item_id, item_name, quantity, price
     FROM categories
-    JOIN items
+    LEFT JOIN items
     ON categories.id = items.category_id
     WHERE categories.id = $1;
     `,
@@ -21,10 +21,11 @@ const singleCategoryGet = asyncHandler(async (req, res, next) => {
 
   const cat = category.rows[0].cat_name;
   const categoryTitle = cat.charAt(0).toUpperCase() + cat.slice(1);
-
+  console.log(category.rows)
   res.render("category", {
     title: categoryTitle,
     items: category.rows,
+    categoryId: category.rows[0].cat_id,
   });
 });
 
@@ -85,6 +86,29 @@ const createCategoryPost = [
   }),
 ];
 
+const categoryUpdateForm = asyncHandler(async (req, res, next) => {
+  const id = req.params.id;
+  const category = await db.query(
+    `
+      SELECT categories.id AS cat_id, cat_name, items.id AS item_id, item_name, quantity, price
+      FROM categories
+      LEFT JOIN items
+      ON categories.id = items.category_id
+      WHERE categories.id = $1;
+      `,
+    [id],
+  );
+
+  const cat = category.rows[0].cat_name;
+  const categoryTitle = cat.charAt(0).toUpperCase() + cat.slice(1);
+  res.render("category", {
+    title: categoryTitle,
+    items: category.rows,
+    categoryId: category.rows[0].cat_id,
+    admin: true,
+  });
+});
+
 function updateCategoryGet(req, res, next) {
   res.send("update category GET");
 }
@@ -100,4 +124,5 @@ module.exports = {
   createCategoryPost,
   updateCategoryGet,
   updateCategoryPost,
+  categoryUpdateForm,
 };

@@ -8,6 +8,7 @@
     </div>
     <div class="item-details">
     <% if(locals.admin) { %>
+        <% if(locals.item) { %>
         <h2><%= item.item_name%></h2>
         <form action="/dashboard/items/<%= item.id %>/update" method="POST">
             <% if (locals.categories) { %>
@@ -34,10 +35,41 @@
         <a href="/dashboard/items/<%= item.id %>">Cancel</a>
         <button type="submit">Confirm</button>
     </form>
+    <form action="/dashboard/items/<%= item.id %>/delete" method="post">
+        <button type="submit" name="toDelete" value="<%= item.id %>">Delete item</button>
+    </form>
+    <% } else { %>
+        <h2>New Item:</h2>
+        <form action="/dashboard/items/create" method="POST">
+            <% if (locals.categories) { %>
+                <label for="categoryName">Category:</label>
+                <select id="categoryName" name="categorySelect" type="text">
+                    <% categories.forEach(cat => { %>
+                        <option value="<%= cat.id %>"><%= cat.cat_name %></option>
+                    <% }) %>
+                </select>
+            <% } else { %>
+                <label for="categoryName">New Category:</label>
+                <input type="text" name="categoryInput" id="categoryName">
+                <% } %>
+
+        <label for="itemName">Name:</label>
+        <input id="itemName" name="itemName" type="text">
+
+        <label for="price">Price:</label>
+        <input id="price" name="price" type="text">
+
+        <label for="quantity">Quantity:</label>
+        <input type="text" name="quantity" id="quantity">
+
+        <a href="/dashboard">Cancel</a>
+        <button type="submit">Confirm</button>
+    </form>
+        <% } %>
         <% } else { %>
         <h2>Info</h2>
         <p>Category:</p>
-        <p><%= item.cat_name %></p>
+        <a href="/dashboard/categories/<%= item.cat_id %>"><%= item.cat_name %></a>
         <p>Name:</p>
         <p><%= item.item_name %></p>
         <p>Price:</p>

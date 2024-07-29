@@ -9,6 +9,7 @@ categoriesRouter.get("/create", categoryController.createCategoryGet);
 categoriesRouter.post("/create", categoryController.createCategoryPost);
 
 categoriesRouter.get("/:id", categoryController.singleCategoryGet);
+categoriesRouter.post("/:id", categoryController.categoryUpdateForm);
 
 categoriesRouter.get('/:id/update', categoryController.updateCategoryGet);
 categoriesRouter.post('/:id/update', categoryController.updateCategoryPost);
