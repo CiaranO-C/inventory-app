@@ -78,6 +78,7 @@ main {
   justify-content: center;
   gap: 50px;
   font-family: "Anaheim", sans-serif;
+  padding: 50px 0px;
 }
 
 /* Shared styles */
@@ -189,4 +190,5 @@ main {
 /* Footer partial */
 footer {
   margin: auto;
+  height: 30px;
 }
