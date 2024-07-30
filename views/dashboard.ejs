@@ -8,9 +8,9 @@
   <section class="items-section">
     <h2>Items</h2>
     <div class="items-info">
-        <a href="" class="item-card">In stock</a>
-        <a href="" class="item-card">Running low</a>
-        <a href="" class="item-card">Out of stock</a>
+        <a href="/dashboard/items/in-stock" class="item-card">In stock <span><%= count.in_stock%></span></a>
+        <a href="/dashboard/items/low-stock" class="item-card">Running low <span><%= count.low_stock%></span></a>
+        <a href="/dashboard/items/out-of-stock" class="item-card">Out of stock <span><%= count.out_of_stock%></span></a>
     </div>
   </section>
   <section class="category-section">
@@ -20,7 +20,7 @@
             <% categories.forEach(category => { %>
         <a href="/dashboard/categories/<%= category.id %>" class="category-card"><%= category.cat_name%></a>
         <% })} %>
-        <a href="/dashboard/categories/create" id="add-category" class="category-card">+</a>
+        <a href="/admin/categories/confirm-create" id="add-category" class="category-card">+</a>
     </div>
   </section>
 </main>
