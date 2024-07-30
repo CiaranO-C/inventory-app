@@ -5,6 +5,7 @@
         <h1><%= title%>:</h1>
         <% if(locals.admin) { %>
             <a href="/dashboard/items/create">Add item</a>
+            <form action="/dashboard/categories/<%= categoryId %>/delete" method="post"><button type="submit" name="toDelete" value="<%= categoryId %>">Delete Category</button></form>
             <div class="category-grid">
                 <p class="item-heading">Name</p>
                 <p class="item-heading">Price</p>
@@ -26,7 +27,7 @@
             <p class="item-heading">Name</p>
             <p class="item-heading">Price</p>
             <p class="item-heading">Quantity</p>
-            <p class="item-heading">Info</p>
+            <p class="info-heading">Info</p>
        
             <% if(!items[0].item_name) { %>
                 <p>This category has no items!</p>

@@ -1,6 +1,5 @@
 const { Router } = require("express");
 const itemController = require("../controllers/itemController");
-const psql = require('../db/queries')
 
 const itemsRouter = Router();
 

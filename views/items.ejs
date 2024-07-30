@@ -3,21 +3,34 @@
 <main>
 <h1><%= title %>:</h1>
 <div class="item-grid">
-    <form action="/dashboard/items/sort" method="GET">
-        <button type="submit" name="sort" value="category" class="item-heading"  id="<%= locals.sort === 'category' ? 'active' : ''%>">Category<span class="material-symbols-outlined"><%= locals.order === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' %></span></button>
-        <input type="hidden" name="order" value="<%= locals.order === 'desc' ? 'asc' : 'desc'%>">
+    <form action="<%= path %>" method="POST">
+        <button type="submit" name="sort" value="cat_name" class="item-heading"  id="<%= locals.sort === 'cat_name' ? 'active' : ''%>">
+            Category
+            <span class="material-symbols-outlined"><%= locals.order === 'DESC' && locals.sort === 'cat_name' ? 'arrow_drop_up' : 'arrow_drop_down' %></span>
+        </button>
+        <input type="hidden" name="order" value="<%= locals.order === 'DESC' ? 'ASC' : 'DESC'%>">
     </form>
-        <form action="/dashboard/items/sort" method="GET">
-        <button type="submit" name="sort" value="name" class="item-heading" id="<%= !locals.sort || locals.sort === 'name' ? 'active' : ''%>">Name<span class="material-symbols-outlined"><%= !locals.order || locals.order === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' %></span></button>
-        <input type="hidden" name="order" value="<%= locals.order === 'desc' ? 'asc' : 'desc'%>">
+        <form action="<%= path %>" method="POST">
+        <button type="submit" name="sort" value="item_name" class="item-heading" id="<%= !locals.sort || locals.sort === 'item_name' ? 'active' : ''%>">
+            Name
+            <span class="material-symbols-outlined">
+                <%= !locals.order || locals.order === 'DESC' && locals.sort === 'item_name' ? 'arrow_drop_up' : 'arrow_drop_down' %></span>
+        </button>
+        <input type="hidden" name="order" value="<%= !locals.order || locals.order === 'DESC' ? 'ASC' : 'DESC'%>">
     </form>
-        <form action="/dashboard/items/sort" method="GET">
-        <button type="submit" name="sort" value="price" class="item-heading" id="<%= locals.sort === 'price' ? 'active' : ''%>">Price<span class="material-symbols-outlined"><%= locals.order === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' %></span></button>
-        <input type="hidden" name="order" value="<%= locals.order === 'desc' ? 'asc' : 'desc'%>">
+        <form action="<%= path %>" method="POST">
+        <button type="submit" name="sort" value="price" class="item-heading" id="<%= locals.sort === 'price' ? 'active' : ''%>">
+            Price
+            <span class="material-symbols-outlined"><%= locals.order === 'DESC' && locals.sort === 'price' ? 'arrow_drop_up' : 'arrow_drop_down' %></span>
+        </button>
+        <input type="hidden" name="order" value="<%= locals.order === 'DESC' ? 'ASC' : 'DESC'%>">
     </form>
-        <form action="/dashboard/items/sort" method="GET">
-        <button type="submit" name="sort" value="quantity" class="item-heading" id="<%= locals.sort === 'quantity' ? 'active' : ''%>" >Quantity<span class="material-symbols-outlined"><%= locals.order === 'desc' ? 'arrow_drop_up' : 'arrow_drop_down' %></span></button>
-        <input type="hidden" name="order" value="<%= locals.order === 'desc' ? 'asc' : 'desc'%>">
+        <form action="<%= path %>" method="POST">
+        <button type="submit" name="sort" value="quantity" class="item-heading" id="<%= locals.sort === 'quantity' ? 'active' : ''%>" >
+            Quantity
+            <span class="material-symbols-outlined"><%= locals.order === 'DESC' && locals.sort === 'quantity' ? 'arrow_drop_up' : 'arrow_drop_down' %></span>
+        </button>
+        <input type="hidden" name="order" value="<%= locals.order === 'DESC' ? 'ASC' : 'DESC'%>">
     </form>
         <p class="info-heading">Info</p>    
 
