@@ -1,10 +1,31 @@
 const asyncHandler = require("express-async-handler");
 const db = require("../db/pool");
+const psql = require("../db/queries");
 const { body, validationResult } = require("express-validator");
 
-function allItemsGet(req, res, next) {
-  res.render("items");
-}
+const inStockGet = asyncHandler(async (req, res, next) => {
+  const items = await psql.getInStockItems();
+  res.render("items", {
+    title: "In Stock",
+    items,
+  });
+});
+
+const lowStockGet = asyncHandler(async (req, res, next) => {
+  const items = await psql.getLowStockItems();
+  res.render("items", {
+    title: "Low Stock",
+    items,
+  });
+});
+
+const outOfStockGet = asyncHandler(async (req, res, next) => {
+    const items = await psql.getOutOfStockItems();
+    res.render("items", {
+      title: "Out of Stock",
+      items,
+    });
+  });
 
 const singleItemGet = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
@@ -17,7 +38,7 @@ const singleItemGet = asyncHandler(async (req, res, next) => {
         WHERE items.id = $1;`,
     [id],
   );
-  console.log(item.rows)
+  console.log(item.rows);
   res.render("item", {
     title: "Item info",
     item: item.rows[0],
@@ -49,7 +70,7 @@ const createItemPost = asyncHandler(async (req, res, next) => {
       "INSERT INTO categories(cat_name) VALUES($1) RETURNING id;",
       [categoryInput],
     );
-    console.log(newCategory.rows)
+    console.log(newCategory.rows);
   }
 
   const newItem = await db.query(
@@ -181,20 +202,25 @@ const updateItemPost = [
 
 const deleteOnePost = asyncHandler(async (req, res, next) => {
   const itemId = req.body.toDelete;
-  const item = (await db.query(`SELECT * FROM items WHERE id = $1`, [itemId]))
-    .rows;
+  const item = (
+    await db.query(`SELECT *, item_name AS _name FROM items WHERE id = $1`, [
+      itemId,
+    ])
+  ).rows;
   console.log(`Are you sure you want to delete the following items?`);
   console.log(item);
 
   res.render("confirmDelete", {
     title: "Confirm item delete",
-    items: item,
+    toDelete: item,
     returnPath: `/dashboard/items/${item[0].id}`,
   });
 });
 
 module.exports = {
-  allItemsGet,
+  inStockGet,
+  lowStockGet,
+  outOfStockGet,
   singleItemGet,
   createItemGet,
   updateItemGet,
