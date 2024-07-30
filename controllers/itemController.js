@@ -3,29 +3,91 @@ const db = require("../db/pool");
 const psql = require("../db/queries");
 const { body, validationResult } = require("express-validator");
 
+const orderValidate = body("order")
+  .custom((value) => {
+    if (value !== "ASC" || value !== "DESC") {
+      throw new Error("invalid display order");
+    }
+
+    return true;
+  })
+  .optional({ values: "falsy" });
+
+const handleSort = asyncHandler(async (req, res, next) => {
+  const path = new URL(req.get("referer")).pathname;
+  console.log(path);
+  const { sort, order } = req.body;
+  const conditions = {
+    "/dashboard/items/in-stock": "quantity > 0",
+    "/dashboard/items/low-stock": "quantity <= 10 AND quantity > 0",
+    "/dashboard/items/out-of-stock": "quantity = 0",
+  };
+  console.log("sort:", sort, " | ", "order:", order, " | ", conditions[path]);
+  const items = await psql.getSortedItems(sort, order, conditions[path]);
+  if (!items) {
+    return res.redirect(path);
+  }
+  req.body.items = items;
+
+  next();
+});
+
 const inStockGet = asyncHandler(async (req, res, next) => {
-  const items = await psql.getInStockItems();
-  res.render("items", {
-    title: "In Stock",
-    items,
-  });
+  if (!req.body.items) {
+    const items = await psql.getInStockItems();
+    res.render("items", {
+      title: "In Stock",
+      items,
+      path: req.originalUrl,
+    });
+  } else {
+    res.render("items", {
+      title: "In Stock",
+      items: req.body.items,
+      path: req.originalUrl,
+      sort: req.body.sort,
+      order: req.body.order,
+    });
+  }
 });
 
 const lowStockGet = asyncHandler(async (req, res, next) => {
-  const items = await psql.getLowStockItems();
-  res.render("items", {
-    title: "Low Stock",
-    items,
-  });
+  if (!req.body.items) {
+    const items = await psql.getLowStockItems();
+    res.render("items", {
+      title: "Low Stock",
+      items,
+      path: req.originalUrl,
+    });
+  } else {
+    res.render("items", {
+      title: "Low Stock",
+      items: req.body.items,
+      path: req.originalUrl,
+      sort: req.body.sort,
+      order: req.body.order,
+    });
+  }
 });
 
 const outOfStockGet = asyncHandler(async (req, res, next) => {
+  if (!req.body.items) {
     const items = await psql.getOutOfStockItems();
     res.render("items", {
       title: "Out of Stock",
       items,
+      path: req.originalUrl,
     });
-  });
+  } else {
+    res.render("items", {
+      title: "Out of Stock",
+      items: req.body.items,
+      path: req.originalUrl,
+      sort: req.body.sort,
+      order: req.body.order,
+    });
+  }
+});
 
 const singleItemGet = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
@@ -218,6 +280,7 @@ const deleteOnePost = asyncHandler(async (req, res, next) => {
 });
 
 module.exports = {
+  handleSort,
   inStockGet,
   lowStockGet,
   outOfStockGet,

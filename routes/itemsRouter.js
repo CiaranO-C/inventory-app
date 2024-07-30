@@ -1,18 +1,23 @@
 const { Router } = require("express");
 const itemController = require("../controllers/itemController");
+const psql = require('../db/queries')
 
 const itemsRouter = Router();
 
 //itemsRouter.get("/", itemController.allItemsGet);
 itemsRouter.get("/in-stock", itemController.inStockGet);
+itemsRouter.post("/in-stock", itemController.handleSort, itemController.inStockGet);
+
 itemsRouter.get("/low-stock", itemController.lowStockGet);
+itemsRouter.post("/low-stock", itemController.handleSort, itemController.lowStockGet);
+
 itemsRouter.get("/out-of-stock", itemController.outOfStockGet);
+itemsRouter.post("/out-of-stock", itemController.handleSort, itemController.outOfStockGet);
+
 itemsRouter.get("/create", itemController.createItemGet);
 itemsRouter.post("/create", itemController.createItemPost);
 
-itemsRouter.get("/sort", (req, res, next) => {
-    console.log(req.query)
-});
+itemsRouter.get("/sort", itemController.handleSort);
 
 itemsRouter.get("/:id", itemController.singleItemGet);
 itemsRouter.post("/:id", itemController.updateItemForm);
