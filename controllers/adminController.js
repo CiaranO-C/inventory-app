@@ -1,6 +1,5 @@
 const asyncHandler = require("express-async-handler");
 const db = require("../db/pool");
-const { query } = require("express");
 
 const adminFormGet = (req, res, next) => {
   const path = "/dashboard" + req.path;
@@ -34,11 +33,8 @@ const confirmCategoryDelete = asyncHandler(async (req, res, next) => {
   res.redirect("/dashboard");
 });
 
-const adminFormPost = asyncHandler(async (req, res, next) => {});
-
 module.exports = {
   adminFormGet,
-  adminFormPost,
   confirmItemDelete,
   confirmCategoryDelete,
 };

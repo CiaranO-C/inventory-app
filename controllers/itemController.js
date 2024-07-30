@@ -3,16 +3,6 @@ const db = require("../db/pool");
 const psql = require("../db/queries");
 const { body, validationResult } = require("express-validator");
 
-const orderValidate = body("order")
-  .custom((value) => {
-    if (value !== "ASC" || value !== "DESC") {
-      throw new Error("invalid display order");
-    }
-
-    return true;
-  })
-  .optional({ values: "falsy" });
-
 const handleSort = asyncHandler(async (req, res, next) => {
   const path = new URL(req.get("referer")).pathname;
   console.log(path);
@@ -119,10 +109,6 @@ const createItemGet = asyncHandler(async (req, res, next) => {
       admin: true,
     });
 });
-
-function updateItemGet(req, res, next) {
-  res.send("update existing item GET");
-}
 
 const createItemPost = asyncHandler(async (req, res, next) => {
   const { categorySelect, categoryInput, itemName, price, quantity } = req.body;
@@ -286,7 +272,6 @@ module.exports = {
   outOfStockGet,
   singleItemGet,
   createItemGet,
-  updateItemGet,
   createItemPost,
   updateItemForm,
   updateItemPost,
