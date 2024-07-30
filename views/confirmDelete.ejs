@@ -1,0 +1,19 @@
+<%- include('partials/head')%>
+<div class="overlay">
+    <h1>Confirm Delete?</h1>
+    <% if(locals.type) { %>
+        <p>Warning: Deleting a category will permanently delete any items within</p>
+        <% } %>
+    <dialog class="modal" open>
+        <form action="/admin/<%= locals.type === 'category' ? 'category' : 'item' %>/delete" method="POST">
+            <% toDelete.forEach(item => { %>
+                <div>
+                    <input id="itemName" name="id" type="hidden" value="<%= item.id %>" readonly>
+                    <p><%= item._name %></p>
+                </div>
+            <% }) %>
+            <button type="submit">Confirm</button>
+        </form>
+        <a href="<%= returnPath %>">Cancel</a>
+    </dialog>
+</div>

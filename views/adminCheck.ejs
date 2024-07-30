@@ -1,0 +1,18 @@
+<%- include('partials/head') %>
+<div class="overlay">
+  <dialog class="modal" open>
+    <form action="<%= path %>" method="POST">
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" required />
+      <% if(locals.errors) { %>
+        <ul>
+        <% errors.forEach(err => { %>
+            <li><%= err.msg %></li>
+            <% }) %>
+        </ul>
+        <% } %>
+      <a href="<%= path %>">Go back</a>
+      <button type="submit">Submit</button>
+    </form>
+  </dialog>
+</div>

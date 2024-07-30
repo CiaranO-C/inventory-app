@@ -1,1 +1,51 @@
-<h1>items page</h1>
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main>
+<h1><%= title %>:</h1>
+<div class="item-grid">
+    <form action="<%= path %>" method="POST">
+        <button type="submit" name="sort" value="cat_name" class="item-heading"  id="<%= locals.sort === 'cat_name' ? 'active' : ''%>">
+            Category
+            <span class="material-symbols-outlined"><%= locals.order === 'DESC' && locals.sort === 'cat_name' ? 'arrow_drop_up' : 'arrow_drop_down' %></span>
+        </button>
+        <input type="hidden" name="order" value="<%= locals.order === 'DESC' ? 'ASC' : 'DESC'%>">
+    </form>
+        <form action="<%= path %>" method="POST">
+        <button type="submit" name="sort" value="item_name" class="item-heading" id="<%= !locals.sort || locals.sort === 'item_name' ? 'active' : ''%>">
+            Name
+            <span class="material-symbols-outlined">
+                <%= !locals.order || locals.order === 'DESC' && locals.sort === 'item_name' ? 'arrow_drop_up' : 'arrow_drop_down' %></span>
+        </button>
+        <input type="hidden" name="order" value="<%= !locals.order || locals.order === 'DESC' ? 'ASC' : 'DESC'%>">
+    </form>
+        <form action="<%= path %>" method="POST">
+        <button type="submit" name="sort" value="price" class="item-heading" id="<%= locals.sort === 'price' ? 'active' : ''%>">
+            Price
+            <span class="material-symbols-outlined"><%= locals.order === 'DESC' && locals.sort === 'price' ? 'arrow_drop_up' : 'arrow_drop_down' %></span>
+        </button>
+        <input type="hidden" name="order" value="<%= locals.order === 'DESC' ? 'ASC' : 'DESC'%>">
+    </form>
+        <form action="<%= path %>" method="POST">
+        <button type="submit" name="sort" value="quantity" class="item-heading" id="<%= locals.sort === 'quantity' ? 'active' : ''%>" >
+            Quantity
+            <span class="material-symbols-outlined"><%= locals.order === 'DESC' && locals.sort === 'quantity' ? 'arrow_drop_up' : 'arrow_drop_down' %></span>
+        </button>
+        <input type="hidden" name="order" value="<%= locals.order === 'DESC' ? 'ASC' : 'DESC'%>">
+    </form>
+        <p class="info-heading">Info</p>    
+
+    <% if(!items[0].item_name) { %>
+        <p>This category has no items!</p>
+
+        <% } else { %>
+        <% items.forEach(item => { %>
+            <p><%= item.cat_name %></p>
+            <p><%= item.item_name %></p>
+            <p>£<%= item.price %></p>
+            <p><%= item.quantity %></p>
+            <a href="/dashboard/items/<%= item.id%>" class="material-symbols-outlined">info</a>   
+        <% }) %>
+    <% } %>
+</div>
+</main>
+<%- include('partials/footer') %>
