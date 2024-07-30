@@ -11,13 +11,8 @@ const adminFormGet = (req, res, next) => {
   });
 };
 
-const passwordReceiver = (req, res, next) => {
-  const password = req.body.password;
-  const path = req.path;
-};
-
-const confirmDelete = asyncHandler(async (req, res, next) => {
-  const itemId = req.body.itemName;
+const confirmItemDelete = asyncHandler(async (req, res, next) => {
+  const itemId = req.body.id;
   let sql;
   if (Array.isArray(itemId)) {
     sql = "DELETE FROM items WHERE id = ANY($1) RETURNING *";
@@ -29,6 +24,21 @@ const confirmDelete = asyncHandler(async (req, res, next) => {
   res.redirect("/dashboard");
 });
 
+const confirmCategoryDelete = asyncHandler(async (req, res, next) => {
+  const categoryId = req.body.id;
+  const response = await db.query(
+    "DELETE FROM categories WHERE id = $1 RETURNING *;",
+    [categoryId],
+  );
+  console.log(response);
+  res.redirect("/dashboard");
+});
+
 const adminFormPost = asyncHandler(async (req, res, next) => {});
 
-module.exports = { adminFormGet, adminFormPost, confirmDelete };
+module.exports = {
+  adminFormGet,
+  adminFormPost,
+  confirmItemDelete,
+  confirmCategoryDelete,
+};
